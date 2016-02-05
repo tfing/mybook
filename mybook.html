@@ -17,32 +17,52 @@
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="js/kickstart.js"></script>
   <script type="text/javascript">
-  $( document ).ready( function() {
-    $("#mb_ym_add_head").click(function(event){
-      var ym = $.trim($(".mb_ym_head").text());
-      //console.log(ym);
-      var ym_lst = ym.split('.');
-      var year = parseInt(ym_lst[0]);
-      var month = parseInt(ym_lst[1]);
-      if (month == 12)
-      {
-        year = year + 1;
-        month = 1;
-      }
-      else {
-        month += 1;
-      }
-      //console.log(year);
-      var ele = $("<div></div>")
-        .append($("<h5></h5>")
-          .text(year+"."+month)
-        );
-      //console.log(ele);
-      $(".mb_ym_head").before(ele);
-      $(".mb_ym_head").removeClass("mb_ym_head");
-      ele.addClass("mb_ym_head");
+    $(document).ready(function() {
+      $("#mb_ym_add_head").click(function(event) {
+        var ym = $.trim($(".mb_ym_head").text());
+        //console.log(ym);
+        var ym_lst = ym.split('.');
+        var year = parseInt(ym_lst[0]);
+        var month = parseInt(ym_lst[1]);
+        if (month == 12) {
+          year = year + 1;
+          month = 1;
+        } else {
+          month += 1;
+        }
+        //console.log(year);
+        var ele = $("<div></div>")
+          .append($("<h5></h5>")
+            .text(year + "." + month)
+          );
+        //console.log(ele);
+        $(".mb_ym_head").before(ele);
+        $(".mb_ym_head").removeClass("mb_ym_head");
+        ele.addClass("mb_ym_head");
+      });
+
+      $("#mb_ym").click(function(event) {
+        console.log(event.target.textContent)
+        var ym = event.target.textContent.split('.')
+          //console.log(ym, parseInt(ym[0]), parseInt(ym[1]))
+          // if 0 is provided for dayValue, the date will be set to the last day of the previous month.
+        var days = new Date(parseInt(ym[0]), parseInt(ym[1]), 0)
+          //console.log(days.getDate())
+        for (day = days.getDate(); day > 0; day--) {
+          var ele = $("<div></div>")
+            .addClass("mb_day")
+            .append($("<div></div>")
+              .addClass("mb_day_val")
+              .text(day)
+            ).append($("<div></div>")
+              .adClass("mb_day_rec")
+              .text("blabla")
+            )
+
+          $("#mb_day_container")
+        }
+      });
     });
-  });
   </script>
 </head>
 
@@ -61,17 +81,19 @@
             <li><a><i id="mb_ym_del_head" class="fa fa-minus-square"></i></a></li>
           </ul>
         </div>
-        <div class="mb_ym_head">
-          <h5>2016.3</h5>
-        </div>
-        <div>
-          <h5>2016.2</h5>
-        </div>
-        <div>
-          <h5>2016.1</h5>
-        </div>
-        <div class="mb_ym_tail">
-          <h5>2015.12</h5>
+        <div id="mb_ym">
+          <div class="mb_ym_head">
+            <h5>2016.3</h5>
+          </div>
+          <div>
+            <h5>2016.2</h5>
+          </div>
+          <div>
+            <h5>2016.1</h5>
+          </div>
+          <div class="mb_ym_tail">
+            <h5>2015.12</h5>
+          </div>
         </div>
         <div>
           <ul class="button-bar">
@@ -81,85 +103,88 @@
         </div>
       </div>
       <div class="col_5 day">
-        <div>
+        <div id="mb_day_container">
+          <div class="mb_day">
+            <div class="mb_day_val">
+              <h5>15</h5>
+            </div>
+            <div class="mb_day_rec">
+              <table cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div>
-            <h5>15</h5>
+            <div>
+              <h6>14</h6>
+            </div>
+            <div>
+              <table cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div>
-            <table cellspacing="0" cellpadding="0">
-              <tbody>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div>
-          <div>
-            <h6>14</h6>
-          </div>
-          <div>
-            <table cellspacing="0" cellpadding="0">
-              <tbody>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div>
-          <div>
-            <h6>13</h6>
-          </div>
-          <div>
-            <table cellspacing="0" cellpadding="0">
-              <tbody>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-                <tr>
-                  <td>Item1</td>
-                  <td>Item2</td>
-                </tr>
-              </tbody>
-            </table>
+            <div>
+              <h6>13</h6>
+            </div>
+            <div>
+              <table cellspacing="0" cellpadding="0">
+                <tbody>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                  <tr>
+                    <td>Item1</td>
+                    <td>Item2</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

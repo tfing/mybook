@@ -17,32 +17,77 @@
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="js/kickstart.js"></script>
   <script type="text/javascript">
-  $( document ).ready( function() {
-    $("#mb_ym_add_head").click(function(event){
-      var ym = $.trim($(".mb_ym_head").text());
-      //console.log(ym);
-      var ym_lst = ym.split('.');
-      var year = parseInt(ym_lst[0]);
-      var month = parseInt(ym_lst[1]);
-      if (month == 12)
-      {
-        year = year + 1;
-        month = 1;
-      }
-      else {
-        month += 1;
-      }
-      //console.log(year);
-      var ele = $("<div></div>")
-        .append($("<h5></h5>")
-          .text(year+"."+month)
-        );
-      //console.log(ele);
-      $(".mb_ym_head").before(ele);
-      $(".mb_ym_head").removeClass("mb_ym_head");
-      ele.addClass("mb_ym_head");
+    $(document).ready(function() {
+      $("#mb_ym_add_head").click(function(event) {
+        var ym = $.trim($(".mb_ym_head").text());
+        //console.log(ym);
+        var ym_lst = ym.split('.');
+        var year = parseInt(ym_lst[0]);
+        var month = parseInt(ym_lst[1]);
+        if (month == 12) {
+          year = year + 1;
+          month = 1;
+        } else {
+          month += 1;
+        }
+        //console.log(year);
+        var ele = $("<div></div>")
+          .append($("<h5></h5>")
+            .text(year + "." + month)
+          );
+        //console.log(ele);
+        $(".mb_ym_head").before(ele);
+        $(".mb_ym_head").removeClass("mb_ym_head");
+        ele.addClass("mb_ym_head");
+      });
+      $("#mb_ym_del_head").click(function(event) {
+        var head = $(".mb_ym_head");
+        var next = head.next();
+
+        // keep at least one
+        if (head.hasClass("mb_ym_tail"))
+          return;
+
+        head.remove();
+        next.addClass("mb_ym_head");
+      });
+      $("#mb_ym_add_tail").click(function(event) {
+        var ym = $.trim($(".mb_ym_tail").text());
+        //console.log(ym);
+        var ym_lst = ym.split('.');
+        var year = parseInt(ym_lst[0]);
+        var month = parseInt(ym_lst[1]);
+        if (month == 1) {
+          year = year - 1;
+          month = 12;
+        } else {
+          month -= 1;
+        }
+        //console.log(year);
+        var ele = $("<div></div>")
+          .append($("<h5></h5>")
+            .text(year + "." + month)
+          );
+        //console.log(ele);
+        $(".mb_ym_tail").after(ele);
+        $(".mb_ym_tail").removeClass("mb_ym_tail");
+        ele.addClass("mb_ym_tail");
+      });
+      $("#mb_ym_del_tail").click(function(event) {
+        var tail = $(".mb_ym_tail");
+        var prev = tail.prev();
+
+        // keep at least one
+        if (tail.hasClass("mb_ym_head"))
+          return;
+
+        tail.remove();
+        prev.addClass("mb_ym_tail");
+      });
+      $("#mb_ym").click(function(ev) {
+        console.log(ev.target.textContent);
+      });
     });
-  });
   </script>
 </head>
 
@@ -57,26 +102,28 @@
       <div id="mb_year_month" class="col_1 year_month">
         <div>
           <ul class="button-bar">
-            <li><a><i id="mb_ym_add_head" class="fa fa-plus-square"></i></a></li>
-            <li><a><i id="mb_ym_del_head" class="fa fa-minus-square"></i></a></li>
+            <li id="mb_ym_add_head"><a><i  class="fa fa-plus-square"></i></a></li>
+            <li id="mb_ym_del_head"><a><i  class="fa fa-minus-square"></i></a></li>
           </ul>
         </div>
-        <div class="mb_ym_head">
-          <h5>2016.3</h5>
-        </div>
-        <div>
-          <h5>2016.2</h5>
-        </div>
-        <div>
-          <h5>2016.1</h5>
-        </div>
-        <div class="mb_ym_tail">
-          <h5>2015.12</h5>
+        <div id="mb_ym">
+          <div class="mb_ym_head">
+            <h5 class="test">2016.3</h5>
+          </div>
+          <div>
+            <h5>2016.2</h5>
+          </div>
+          <div>
+            <h5>2016.1</h5>
+          </div>
+          <div class="mb_ym_tail">
+            <h5>2015.12</h5>
+          </div>
         </div>
         <div>
           <ul class="button-bar">
-            <li><a><i id="mb_ym_add_tail" class="fa fa-plus-square"></i></a></li>
-            <li><a><i id="mb_ym_del_tail" class="fa fa-minus-square"></i></a></li>
+            <li id="mb_ym_add_tail"><a><i class="fa fa-plus-square"></i></a></li>
+            <li id="mb_ym_del_tail"><a><i class="fa fa-minus-square"></i></a></li>
           </ul>
         </div>
       </div>

@@ -16,6 +16,7 @@
   <!-- Javascript -->
   <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="js/kickstart.js"></script>
+  <script type="text/javascript" src="js/Dexie.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       $("#mb_ym_add_head").click(function(event) {
@@ -40,7 +41,7 @@
         $(".mb_ym_head").removeClass("mb_ym_head");
         ele.addClass("mb_ym_head");
       });
-      
+
       $("#mb_ym_del_head").click(function(event) {
         var head = $(".mb_ym_head");
         var next = head.next();
@@ -89,24 +90,84 @@
       $("#mb_ym").click(function(event) {
         console.log(event.target.textContent)
         var ym = event.target.textContent.split('.');
-          //console.log(ym, parseInt(ym[0]), parseInt(ym[1]))
-          // if 0 is provided for dayValue, the date will be set to the last day of the previous month.
+        //console.log(ym, parseInt(ym[0]), parseInt(ym[1]))
+        // if 0 is provided for dayValue, the date will be set to the last day of the previous month.
         var days = new Date(parseInt(ym[0]), parseInt(ym[1]), 0);
-          //console.log(days.getDate())
+        //console.log(days.getDate())
+        $("#mb_day_container").empty();
+
         for (day = days.getDate(); day > 0; day--) {
           var ele = $("<div></div>")
             .addClass("mb_day")
             .append($("<div></div>")
               .addClass("mb_day_val")
-              .text(day)
+              .append($("<h5></h5>")
+                .text(day)
+              )
             ).append($("<div></div>")
-              .adClass("mb_day_rec")
+              .addClass("mb_day_rec")
               .text("blabla")
             )
 
-          $("#mb_day_container")
+          $("#mb_day_container").append(ele);
         }
       });
+
+      var db = new Dexie("MyBookDb");
+
+      db.version(1).stores({
+        bookRec: "++id,date,classify,des,value"
+      });
+
+      // caught all error from Dexie
+      Dexie.Promise.on('error', function(err) {
+        console.log("Uncaught error: " + err);
+      })
+
+      // map class property to table index
+      // we can save any type defined in javascript to class member variable
+      function BookRec(date, des, classify, amount) {
+        this.date = date;
+        this.classify = classify;
+        this.des = des;
+        this.amount = amount;
+      }
+
+      db.bookRec.mapToClass(BookRec);
+
+      db.open();
+
+      //var k = new Date(2014, 12, 10);
+
+      db.bookRec.put({
+        date:"2014.12.10",
+        classify:"kkk",
+        des:"djiso fdsafdsmm fjdsioa",
+        amount:555
+      });
+
+
+      var newRec = new BookRec("83383838", "fdsa ccdsd", "432", "desdes");
+
+      // we can add new property to class and save it to db
+      // But we can not query it
+      newRec.test = 'test';
+
+      // we can add an entry by using the mapped class
+      db.bookRec.add(newRec);
+
+      db.bookRec.where("des").equals("dji").toArray().then(function(rec) {
+        console.log(rec[0].date);
+      });
+
+      // clear table (primary key keep increasing)
+      //db.bookRec.clear();
+
+      // clear db (reset primary key)
+      //db.delete();
+
+      var myBlob = new Blob();
+
     });
   </script>
 </head>
@@ -128,7 +189,7 @@
         </div>
         <div id="mb_ym">
           <div class="mb_ym_head">
-            <h5 >2016.3</h5>
+            <h5>2016.3</h5>
           </div>
           <div>
             <h5>2016.2</h5>
@@ -158,7 +219,11 @@
                 <tbody>
                   <tr>
                     <td>Item1</td>
-                    <td>Item2</td>
+                    <td>
+                      <span>r231r3</span>
+                      <span>fjdizv hjwefuia</span>
+                      <span>hvu fdjsij jfidsopa jio</span>
+                    </td>
                   </tr>
                   <tr>
                     <td>Item1</td>
